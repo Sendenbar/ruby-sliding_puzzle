@@ -1,3 +1,6 @@
+class Heuristic
+end
+
 class ManhattanHeuristic
   def value(state)
     counter=0
