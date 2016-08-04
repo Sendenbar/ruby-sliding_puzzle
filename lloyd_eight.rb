@@ -2,64 +2,8 @@ require 'pry'
 require_relative 'heuristics'
 require_relative 'priority_queue'
 require_relative 'GameState'
-
-class Fixnum
-  def factorial
-    (2..self).reduce(:*) || 1
-  end
-end
-
-class BFSGameSolver
-  attr_accessor :list_of_states
-  attr_accessor :q
-  attr_accessor :start_state
-
-
-  def set_start_state(rows,columns,array)
-    @start_state=GameState.new(rows,columns,array.clone) 
-    @start_state.path=""
-  end
-
-  def solve
-    start_time=Time.new
-    if @start_state.solvable? then
-      list_of_states=Array.new(362880,false)
-      q=Queue.new
-      q.push(@start_state)
-      @counter=0
-      @current_state=@start_state
-      while (!q.empty?&&!@current_state.solved?) do
-        @current_state=q.pop
-        @counter+=1
-        @current_state.get_neighbours.each do |neighbour|
-          if neighbour.solved? then
-            @solved=true
-            @current_state=neighbour
-          end
-          if list_of_states[neighbour.permutation_number]==false
-            q.push(neighbour)
-            list_of_states[neighbour.permutation_number]=true
-          end
-        end
-        break if @solved
-      end
-      print_output
-    else
-      puts "Tento stav je neřešitelný"
-    end
-
-
-    end_time=Time.new
-    puts (end_time-start_time)*1000
-  end
-
-  def print_output
-    puts "Stačí #{@current_state.distance} kroků."
-    puts @current_state.path
-    puts "Algoritmus prošel #{@counter} vrcholy."
-  end
-
-end
+require_relative 'factorial'
+require_relative 'BFS'
 
 class AStarGameSolver
   attr_accessor :list_of_states
@@ -182,19 +126,14 @@ state = GameState.new(3,4,(1..12).to_a)
 state.print_state
 
 
-
-#10.times do
-#  solver=BFSGameSolver.new
-#  solver.set_start_state(3,3,a.shuffle!)
-#  solver.start_state.print_state
+  solver=BFSGameSolver.new
+  solver.set_start_state(3,3,a.shuffle!)
+  solver.start_state.print_state
 #  puts "Mělo by stačit #{list[solver.start_state.permutation_number]} kroků..."
-#  solver.solve
+  solver.solve
 #  solver=AStarGameSolver.new
 #  solver.set_start_state(a,h)
 #  solver.start_state.print_state
 #  puts "Mělo by stačit #{list[solver.start_state.permutation_number]} kroků..."
 #  puts "Heuristika: #{h.value(solver.start_state)}"
 #  solver.solve
-#end
-
-
