@@ -50,6 +50,7 @@ class GameState
     @state_array[position_of_empty_tile] = @state_array[position_of_empty_tile - @columns]
     @state_array[position_of_empty_tile - @columns] = @empty
     @path += "D"
+    self
   end
 
   # The empty tile goes down
@@ -57,6 +58,7 @@ class GameState
     @state_array[position_of_empty_tile] = @state_array[position_of_empty_tile + @columns]
     @state_array[position_of_empty_tile + @columns] = @empty
     @path += "U"
+    self
   end
 
   # The empty tile goes right
@@ -64,6 +66,7 @@ class GameState
     @state_array[position_of_empty_tile] = @state_array[position_of_empty_tile + 1]
     @state_array[position_of_empty_tile + 1] = @empty
     @path += "L"
+    self
   end
 
   # The empty tile goes left
@@ -71,6 +74,7 @@ class GameState
     @state_array[position_of_empty_tile]=@state_array[position_of_empty_tile - 1]
     @state_array[position_of_empty_tile - 1] = @empty
     @path += "R"
+    self
   end
 
   def get_neighbours
@@ -123,21 +127,24 @@ class GameState
     return new_state
   end
 
-  def random_move!
+  def random_move!(times)
+   times.times do
     empty_tile = get_position_of_empty_tile
     i =  rand(4)
     case i
-    when 0
-      self.left!(empty_tile) if (empty_tile % @columns) != 0
-    when 1
-      self.right!(empty_tile) if (empty_tile % @columns) != @columns - 1
-    when 2
-      self.up!(empty_tile) if empty_tile >= @columns
-    when 3
-      self.down!(empty_tile) if empty_tile < @columns * (@rows - 1)
-    else
-      puts "OMGWTFERROR!!!"
+      when 0
+        self.left!(empty_tile) if (empty_tile % @columns) != 0
+      when 1
+        self.right!(empty_tile) if (empty_tile % @columns) != @columns - 1
+      when 2
+        self.up!(empty_tile) if empty_tile >= @columns
+      when 3
+        self.down!(empty_tile) if empty_tile < @columns * (@rows - 1)
+      else
+        puts "OMGWTFERROR!!!"
     end
+   end
+   @path = ""
   end
 
   # Compares @state_array with sorted array of equal length
@@ -167,4 +174,11 @@ class GameState
   def solvable?
     @columns % 2 == 1 ? parity_even? : parity_even? == empty_on_odd_row_from_bottom
   end
+  
+
+  def ==(other)
+    @state_array == other.state_array
+  end
+
+  alias eql? ==
 end

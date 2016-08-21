@@ -4,6 +4,7 @@ require_relative 'priority_queue'
 require_relative 'GameState'
 require_relative 'factorial'
 require_relative 'BFS'
+require_relative 'counter'
 
 class AStarGameSolver
   attr_accessor :list_of_states
@@ -64,73 +65,34 @@ class AStarGameSolver
 
 end
 
-class BFSCounter
-  attr_accessor :list_of_states
-  attr_accessor :q
-  attr_accessor :start_state
+a=(1..12).to_a
 
-
-  def set_start_state
-    @start_state=GameState.new(3,3,[1,2,3,4,5,6,7,8,9])
-    @start_state.path=""
-  end
-
-  def solve
-    start_time=Time.new
-    @list_of_states=Array.new(362880,false)
-    q=Queue.new
-    q.push(@start_state)
-    @list_of_states[0]=0
-    @current_state=@start_state
-    while !q.empty? do
-      @current_state=q.pop
-      @current_state.get_neighbours.each do |neighbour|
-        if @list_of_states[neighbour.permutation_number]==false
-          q.push(neighbour)
-          @list_of_states[neighbour.permutation_number]=neighbour.distance
-          if neighbour.distance==31
-            neighbour.print_state
-            puts neighbour.permutation_number
-          end
-        end
-      end
-    end
-
-    (0..31).each do |i|
-      puts "#{i}, #{@list_of_states.count(i)}"
-    end
-
-    end_time=Time.new
-    puts (end_time-start_time)*1000
-  end
-
-end
-
-a=[1,2,3,4,5,6,7,8,9]
-#counter=BFSCounter.new
+counter=BFSCounter.new
 #counter.set_start_state
 #counter.solve
+counter.solve(1,15,true)
 #list=counter.list_of_states
 # puts list[10]
 # h=ManhattanHeuristic.new
-state = GameState.new(3,3,a.clone)
-40.times do 
-  state.random_move!
-end
-state.print_state
+#state = GameState.new(3,3,a.clone)
+#40.times do 
+#  state.random_move!
+#end
+#state.print_state
 
-state = GameState.new(4,3,(1..12).to_a)
-state.print_state
+#state = GameState.new(4,3,(1..12).to_a)
+#state.print_state
 
-state = GameState.new(3,4,(1..12).to_a)
-state.print_state
+#state = GameState.new(3,4,(1..12).to_a)
+#state.print_state
 
 
-  solver=BFSGameSolver.new
-  solver.set_start_state(3,3,a.shuffle!)
-  solver.start_state.print_state
+#  solver=BFSGameSolver.new
+#  solver.set_start_state(4,4,(1..16).to_a)
+#  solver.start_state.random_move!(10)
+#  solver.start_state.print_state
 #  puts "Mělo by stačit #{list[solver.start_state.permutation_number]} kroků..."
-  solver.solve
+#  solver.solve
 #  solver=AStarGameSolver.new
 #  solver.set_start_state(a,h)
 #  solver.start_state.print_state

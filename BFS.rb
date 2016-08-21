@@ -13,7 +13,7 @@ class BFSGameSolver
 
   def solve
    
-    start_time=Time.new
+    start_time = Time.new
     
     if @start_state.solvable? then
       # Should probably use sortedset....
@@ -37,21 +37,19 @@ class BFSGameSolver
         end
         break if @solved
       end
+      @time_needed = Time.new - start_time 
       print_output
     else
       puts "Tento stav je neřešitelný"
     end
-
-    end_time=Time.new
-    puts (end_time-start_time)*1000
-
   end
 
 
   def print_output
-    puts "Stačí #{@current_state.distance} kroků."
+    puts "#{@current_state.distance} steps needed."
     puts @current_state.path
-    puts "Algoritmus prošel #{@counter} vrcholy."
+    puts "#{@counter} states visited."
+    puts "Path found in #{@time_needed} seconds."
   end
 
 end
