@@ -3,8 +3,9 @@ require_relative 'heuristics'
 require_relative 'priority_queue'
 require_relative 'GameState'
 require_relative 'factorial'
-require_relative 'BFS'
-require_relative 'counter'
+require_relative 'BFSSolver'
+require_relative 'Counter'
+require_relative 'AStarSolver'
 
 class AStarGameSolver
   attr_accessor :list_of_states
@@ -65,19 +66,21 @@ class AStarGameSolver
 
 end
 
-a=(1..12).to_a
+a=(1..9).to_a
 
-counter=BFSCounter.new
+#counter=Counter.new
 #counter.set_start_state
 #counter.solve
-counter.solve(1,15,true)
+#counter.solve(7,1,true)
 #list=counter.list_of_states
 # puts list[10]
 # h=ManhattanHeuristic.new
-#state = GameState.new(3,3,a.clone)
-#40.times do 
-#  state.random_move!
-#end
+# state = GameState.new(3,3,a.clone)
+solver = BFSSolver.new
+GameState.set_dimensions(3, 3)
+10.times do 
+  solver.solve(3,3,[1,2,3,4,5,6,7,9,8])
+end
 #state.print_state
 
 #state = GameState.new(4,3,(1..12).to_a)
