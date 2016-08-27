@@ -2,6 +2,7 @@ require_relative '../GameState'
 require_relative '../Counter'
 require_relative '../factorial'
 require_relative '../BFSSolver'
+require_relative '../PriorityQueue'
 require 'test/unit'
 
 class TestGameState < Test::Unit::TestCase
@@ -89,7 +90,6 @@ class TestCounter < Test::Unit::TestCase
 end
 
 class TestBFSSolver < Test::Unit::TestCase
-  
   def test_BFSSolver_finds_shortest_path 
     solver = BFSSolver.new
 
@@ -104,5 +104,30 @@ class TestBFSSolver < Test::Unit::TestCase
 
     solver.solve(2, 2, [3, 1, 4, 2])
     assert_equal(3, solver.end_state.distance, "Wrong path length.")
+  end
+end
+
+class TestPriorityQueue < Test::Unit::TestCase
+  def test_priority_queue_works
+    q = PriorityQueue.new
+    q.enqueue(Random.rand(1000))
+    
+    #Enqueue
+    50.times do 
+      q.enqueue(Random.rand(1000))
+
+      #Smallest element is the first one
+      assert_equal(q.heap.first, q.heap.sort.first, "Smallest element is not the first one in the queue.")
+    end
+
+    #Enqueue/Dequeue
+    50.times do
+      q.enqueue(Random.rand(1000))
+      q.dequeue
+
+      #Smallest element is the first one
+      assert_equal(q.heap.first, q.heap.sort.first, "Smallest element is not the first one in the queue.")
+    end
+
   end
 end
