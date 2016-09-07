@@ -3,6 +3,8 @@ require_relative '../Counter'
 require_relative '../factorial'
 require_relative '../BFSSolver'
 require_relative '../PriorityQueue'
+require_relative '../AStarSolver'
+require_relative '../heuristics.rb'
 require 'test/unit'
 
 class TestGameState < Test::Unit::TestCase
@@ -106,6 +108,26 @@ class TestBFSSolver < Test::Unit::TestCase
     assert_equal(3, solver.end_state.distance, "Wrong path length.")
   end
 end
+
+class TestAStarSolver < Test::Unit::TestCase
+  def test_AStarSolver_finds_shortest_path
+    solver = AStarSolver.new
+    
+    solver.solve(3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9], ManhattanHeuristic)
+    assert_equal("", solver.end_state.path, "Path to solved state longer than 0.")
+    
+    solver.solve(3, 3, [1, 2, 3, 4, 5, 6, 7, 9, 8], ManhattanHeuristic)
+    assert_equal(1, solver.end_state.distance, "Wrong path length.")
+
+    solver.solve(3, 3, [1, 2, 3, 9, 5, 6, 4, 7, 8], ManhattanHeuristic)
+    assert_equal(3, solver.end_state.distance, "Wrong path length.")
+
+    solver.solve(2, 2, [3, 1, 4, 2], ManhattanHeuristic)
+    assert_equal(3, solver.end_state.distance, "Wrong path length.")
+  end
+end
+
+
 
 class TestPriorityQueue < Test::Unit::TestCase
   def test_priority_queue_works

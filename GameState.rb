@@ -2,9 +2,19 @@ require_relative 'factorial'
 require 'pry'
 
 class GameState
+  include Comparable
+  
   attr_accessor :state_array
   attr_accessor :distance
   attr_accessor :path
+  
+  def self.columns 
+    @@columns
+  end
+
+  def self.empty
+    @@empty
+  end
   
   def self.set_heuristic(heuristic)
     @@heuristic = heuristic

@@ -2,10 +2,11 @@ class Heuristic
 end
 
 class ManhattanHeuristic
-  def value(state)
-    counter=0
-    state.state_array.size.times do |index|
-      counter +=((state.state_array[index]-1)/3 - index/3).abs + ((state.state_array[index]-1)%3 - index%3).abs unless state.state_array[index]==9
+  def self.distance(state)
+    columns = GameState.columns
+    counter = 0
+    state.state_array.each_with_index do |value, index|
+      counter += ((value - 1) / columns - index / columns).abs + ((value - 1) % columns - index % columns).abs unless value == GameState.empty
     end
     return counter
   end
